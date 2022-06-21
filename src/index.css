@@ -1,7 +1,11 @@
-body {
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700;900&display=swap");
+* {
+  font-family: "Roboto", sans-serif;
 }
 
 main {
+  color: #fff;
+  background-color: #020202;
   min-height: calc(100vh - 70px);
 }
 footer {
