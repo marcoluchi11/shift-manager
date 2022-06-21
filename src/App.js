@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import Authentication from "./components/Auth/Authentication";
+import { Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+import LoginAdmin from "./components/Admin/LoginAdmin";
 const Container = styled.div`
   main {
     display: flex;
@@ -13,7 +15,10 @@ function App() {
     <Container>
       <main>
         <Header />
-        <Authentication />
+        <Routes>
+          <Route path="/" element={<Authentication />} />
+          <Route path="/admin" element={<LoginAdmin />} />
+        </Routes>
       </main>
       <Footer />
     </Container>
