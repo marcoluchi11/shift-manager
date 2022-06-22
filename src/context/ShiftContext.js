@@ -6,9 +6,22 @@ const ShiftProvider = ({ children }) => {
   const [register, setRegister] = useState({ email: "", password: "" });
   const [user, setUser] = useState(false);
   const [login, setLogin] = useState({ email: "", password: "" });
+  const [error, setError] = useState({ state: false, message: "" });
+  const [success, setSuccess] = useState(false);
   return (
     <ShiftContext.Provider
-      value={{ register, setRegister, login, setLogin, user, setUser }}
+      value={{
+        error,
+        success,
+        setSuccess,
+        setError,
+        register,
+        setRegister,
+        login,
+        setLogin,
+        user,
+        setUser,
+      }}
     >
       {children}
     </ShiftContext.Provider>
