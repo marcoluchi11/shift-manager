@@ -3,7 +3,8 @@ import Authentication from "./components/Auth/Authentication";
 import { Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import LoginAdmin from "./components/Admin/LoginAdmin";
+import WelcomeAdmin from "./components/Admin/WelcomeAdmin";
+import CreateUser from "./components/Admin/CreateUser";
 const Container = styled.div`
   main {
     display: flex;
@@ -17,7 +18,8 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Authentication />} />
-          <Route path="/admin" element={<LoginAdmin />} />
+          <Route path="/admin" element={<WelcomeAdmin />} />
+          <Route path="/admin/createuser" element={<CreateUser />} />
         </Routes>
       </main>
       <Footer />
