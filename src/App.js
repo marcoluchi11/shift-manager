@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import WelcomeAdmin from "./components/Admin/WelcomeAdmin";
 import CreateUser from "./components/Admin/CreateUser";
+import AddPacks from "./components/Admin/AddPacks";
 const Container = styled.div`
   main {
     display: flex;
@@ -20,6 +21,8 @@ function App() {
           <Route path="/" element={<Authentication />} />
           <Route path="/admin" element={<WelcomeAdmin />} />
           <Route path="/admin/createuser" element={<CreateUser />} />
+          <Route path="/admin/addpacks" element={<AddPacks />} />
+          {/* // <Route path='/admin/reserves' element={<Reserves/>} */}
         </Routes>
       </main>
       <Footer />
