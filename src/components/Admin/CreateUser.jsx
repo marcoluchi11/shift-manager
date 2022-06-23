@@ -4,8 +4,12 @@ import { ShiftContext } from "../../context/ShiftContext";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../../firebaseConfig";
+import { Link } from "react-router-dom";
+import Error from "../Error";
+
 const Formulary = styled.form`
   display: flex;
+  position: relative;
   justify-content: center;
   align-self: center;
   flex-direction: column;
@@ -14,10 +18,22 @@ const Formulary = styled.form`
   border: 2px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 0 30px rgba(8, 7, 16, 0.6);
   padding: 5rem;
+  h1 {
+    position: absolute;
+    top: 1rem;
+    left: 15rem;
+  }
   div {
     margin: 0.5rem;
     display: flex;
     flex-direction: column;
+    .exito {
+      background-color: limegreen;
+      color: #fff;
+      margin: 1rem 0;
+      padding: 0.3rem 1rem;
+      border-radius: 5px;
+    }
   }
   .email {
     margin-top: 1rem;
@@ -32,13 +48,15 @@ const Formulary = styled.form`
     border-radius: 3px;
     margin-top: 0.5rem;
     padding: 0 0.5rem;
-
+    color: #fff;
     outline: 0;
   }
   input::placeholder {
-    font-weight: 100;
+    font-weight: 300;
+    color: #fff;
   }
-  input[type="submit"] {
+  input[type="submit"],
+  button {
     margin-top: 1rem;
     width: 100%;
     background-color: #ffffff;
@@ -49,27 +67,43 @@ const Formulary = styled.form`
     border-radius: 5px;
     cursor: pointer;
   }
+  .exito {
+    background-color: limegreen;
+    padding: 0 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 `;
 const CreateUser = () => {
-  const { register, setRegister } = useContext(ShiftContext);
+  const { register, setRegister, error, setError, setSuccess, success } =
+    useContext(ShiftContext);
   const createUser = async (e) => {
     e.preventDefault();
+    //validacion
+    if ([register.email, register.password].includes("")) {
+      setError({ state: true, message: "Completa todos los campos" });
+      return;
+    }
+    setError({ state: false, message: "" });
     try {
       await createUserWithEmailAndPassword(
         auth,
         register.email,
         register.password
       );
-      console.log("User created successfully");
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3500);
     } catch (err) {
-      console.log(err);
       console.log("There was an error!");
+      setError({ message: err.message, state: true });
     }
     setRegister({ email: "", password: "" });
   };
   return (
     <Formulary onSubmit={createUser}>
-      <h1>Crear nuevo alumno</h1>
+      <h2>Crear nuevo alumno</h2>
       <div>
         <label className="email" htmlFor="username">
           Nombre de Usuario
@@ -101,8 +135,15 @@ const CreateUser = () => {
           value={register.password}
           placeholder="Escribe tu contrasenia..."
         />
+        {success && <p className="exito">Usuario creado exitosamente</p>}
+        {error.state && <Error message={error.message} />}
       </div>
       <input type="submit" value="Crear usuario" />
+      <Link to="/admin">
+        <button>Atrás</button>
+      </Link>
+
+      {/* {success && <button className="exito">Success</button>} */}
     </Formulary>
   );
 };
