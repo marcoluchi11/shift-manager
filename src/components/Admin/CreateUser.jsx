@@ -1,12 +1,12 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import { ShiftContext } from "../../context/ShiftContext";
-
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import auth from "../../firebaseConfig";
+import auth, { db } from "../../firebaseConfig";
 import { Link } from "react-router-dom";
 import Error from "../Error";
-
+import Spinner from "./../Spinner";
+import { collection, addDoc } from "firebase/firestore";
 const Formulary = styled.form`
   display: flex;
   position: relative;
@@ -77,6 +77,7 @@ const Formulary = styled.form`
 const CreateUser = () => {
   const { register, setRegister, error, setError, setSuccess, success } =
     useContext(ShiftContext);
+  const [loading, setLoading] = useState(false);
   const createUser = async (e) => {
     e.preventDefault();
     //validacion
@@ -86,11 +87,17 @@ const CreateUser = () => {
     }
     setError({ state: false, message: "" });
     try {
+      setLoading(true);
+      await addDoc(collection(db, "clients"), {
+        email: register.email,
+        //LE AGREGA MAIL CUANDO CREA USUARIO
+      });
       await createUserWithEmailAndPassword(
         auth,
         register.email,
         register.password
       );
+      setLoading(false);
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
@@ -135,6 +142,7 @@ const CreateUser = () => {
           value={register.password}
           placeholder="Escribe tu contrasenia..."
         />
+        {loading && <Spinner />}
         {success && <p className="exito">Usuario creado exitosamente</p>}
         {error.state && <Error message={error.message} />}
       </div>
