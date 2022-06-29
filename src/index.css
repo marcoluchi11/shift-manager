@@ -8,6 +8,17 @@
   border-radius: 5px;
   cursor: pointer;
 }
+.back {
+  margin-top: 1rem;
+  width: 100%;
+  background-color: #ffffff;
+  color: #080710;
+  padding: 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+}
 main {
   color: #fff;
   background-color: #020202;
