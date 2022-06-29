@@ -1,10 +1,6 @@
 import styled from "styled-components";
 import auth from "../../firebaseConfig";
-import {
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-} from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { useEffect, useContext } from "react";
 import { ShiftContext } from "../../context/ShiftContext";
 import LoginAdmin from "./LoginAdmin";
@@ -61,7 +57,6 @@ const WelcomeAdmin = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log(currentUser);
     });
   }, [setUser]);
 
