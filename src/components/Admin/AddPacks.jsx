@@ -57,12 +57,21 @@ const Form = styled.form`
   }
 `;
 const AddPacks = () => {
-  const { clases, setClases, setError, error, setSuccess, success } =
-    useContext(ShiftContext);
+  const {
+    clases,
+    setClases,
+    setError,
+    error,
+    setSuccess,
+    success,
+    loading,
+    setLoading,
+  } = useContext(ShiftContext);
   const [users, setUsers] = useState([]);
 
   const clientsCollectionRef = collection(db, `clients`);
   const updateUser = async (email, pack) => {
+    setLoading(true);
     try {
       const client = users.map((user) => {
         if (user.email === email) {
@@ -82,6 +91,7 @@ const AddPacks = () => {
       const newFields = { pack: Number(pack) };
       await updateDoc(clientDoc, newFields);
       setError({ state: false, message: "" });
+      setLoading(false);
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
@@ -94,12 +104,14 @@ const AddPacks = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     //VALIDACION LOCAL
+
     if ([clases.email, clases.pack].includes("")) {
       setError({ state: true, message: "Completa todos los campos" });
       return;
     }
     //VALIDACION LOCAL
     //UPDATE USER
+
     updateUser(clases.email, clases.pack)
       .then((data) => {
         if (data === false) {
@@ -154,6 +166,7 @@ const AddPacks = () => {
           <option value="6">6 veces por semana</option>
         </select>
       </div>
+      {loading && <Spinner />}
       {error.state && <Error message={error.message} />}
       {success && <p className="exito">Pack añadido exitosamente</p>}
       <input type="submit" value="Agregar Pack" />

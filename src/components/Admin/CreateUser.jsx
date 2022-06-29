@@ -69,9 +69,17 @@ const Formulary = styled.form`
   }
 `;
 const CreateUser = () => {
-  const { register, setRegister, error, setError, setSuccess, success } =
-    useContext(ShiftContext);
-  const [loading, setLoading] = useState(false);
+  const {
+    register,
+    setRegister,
+    error,
+    setError,
+    setSuccess,
+    success,
+    loading,
+    setLoading,
+  } = useContext(ShiftContext);
+
   const clientsCollectionRef = collection(db, `clients`);
   const createUser = async (e) => {
     e.preventDefault();
