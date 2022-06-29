@@ -1,3 +1,5 @@
+import { nanoid } from "nanoid";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import data from "./../../data.json";
 const Container = styled.section`
@@ -29,7 +31,7 @@ const Reserves = () => {
     <Container>
       <table>
         <tr>
-          <td colspan="4">
+          <td colSpan="4">
             <h1>Reservas del dia</h1>
           </td>
 
@@ -43,7 +45,7 @@ const Reserves = () => {
             <td>Owe</td>
           </tr>
           {data.map((elem) => (
-            <tr>
+            <tr key={nanoid()}>
               <td>{elem.first_name}</td>
               <td>{elem.last_name}</td>
               <td>{elem.time}</td>
@@ -52,6 +54,9 @@ const Reserves = () => {
           ))}
         </tr>
       </table>
+      <Link to="/admin">
+        <button className="back">Atras</button>
+      </Link>
     </Container>
   );
 };
