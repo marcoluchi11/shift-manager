@@ -67,17 +67,12 @@ const Formulary = styled.form`
     border-radius: 5px;
     cursor: pointer;
   }
-  .exito {
-    background-color: limegreen;
-    padding: 0 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-  }
 `;
 const CreateUser = () => {
   const { register, setRegister, error, setError, setSuccess, success } =
     useContext(ShiftContext);
   const [loading, setLoading] = useState(false);
+  const clientsCollectionRef = collection(db, `clients`);
   const createUser = async (e) => {
     e.preventDefault();
     //validacion
@@ -88,8 +83,9 @@ const CreateUser = () => {
     setError({ state: false, message: "" });
     try {
       setLoading(true);
-      await addDoc(collection(db, "clients"), {
+      await addDoc(clientsCollectionRef, {
         email: register.email,
+
         //LE AGREGA MAIL CUANDO CREA USUARIO
       });
       await createUserWithEmailAndPassword(
@@ -150,8 +146,6 @@ const CreateUser = () => {
       <Link to="/admin">
         <button>Atrás</button>
       </Link>
-
-      {/* {success && <button className="exito">Success</button>} */}
     </Formulary>
   );
 };
