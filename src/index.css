@@ -2,7 +2,12 @@
 * {
   font-family: "Roboto", sans-serif;
 }
-
+.exito {
+  background-color: limegreen;
+  padding: 0 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
 main {
   color: #fff;
   background-color: #020202;
