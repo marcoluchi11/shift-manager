@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { ShiftContext } from "../../context/ShiftContext";
 
-const LoginAdmin = () => {
+const LoginAdmin = ({ header }) => {
   const { login, setLogin } = useContext(ShiftContext);
   return (
     <div>
-      <h1>Sign in Admin</h1>
+      <h1>{header}</h1>
       <div>
         <label className="email" htmlFor="username">
           Nombre de Usuario
