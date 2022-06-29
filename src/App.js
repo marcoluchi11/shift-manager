@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import Authentication from "./components/Auth/Authentication";
+
+import Login from "./components/User/Login";
 import { Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -19,7 +20,7 @@ function App() {
       <main>
         <Header />
         <Routes>
-          <Route path="/" element={<Authentication />} />
+          <Route path="/" element={<Login />} />X
           <Route path="/admin" element={<WelcomeAdmin />} />
           <Route path="/admin/createuser" element={<CreateUser />} />
           <Route path="/admin/addpacks" element={<AddPacks />} />
