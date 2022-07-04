@@ -5,7 +5,7 @@ import auth from "../../firebaseConfig";
 import { signOut } from "firebase/auth";
 import CreateUser from "./CreateUser";
 import { Link } from "react-router-dom";
-const Container = styled.div`
+export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-self: center;
