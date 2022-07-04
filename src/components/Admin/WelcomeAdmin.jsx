@@ -5,7 +5,7 @@ import { useEffect, useContext } from "react";
 import { ShiftContext } from "../../context/ShiftContext";
 import LoginAdmin from "./LoginAdmin";
 import ScreenLogged from "./ScreenLogged";
-const Formulary = styled.form`
+export const Formulary = styled.form`
   display: flex;
   justify-content: center;
   align-self: center;
@@ -52,8 +52,7 @@ const Formulary = styled.form`
   }
 `;
 const WelcomeAdmin = () => {
-  const { user, setUser, login, setLogin } = useContext(ShiftContext);
-
+  const { user, setUser, login } = useContext(ShiftContext);
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -75,12 +74,22 @@ const WelcomeAdmin = () => {
       console.log(error.message);
     }
   };
+  useEffect(() => {
+    // if (logged) {
+    //   return;
+    // } else {
+    //   const password = prompt("Ingrese password");
+    //   if (password === "12345") {
+    //     setLogged(true);
+    //   }
+    // }
+  }, []);
 
   return user ? (
     <ScreenLogged />
   ) : (
     <Formulary onSubmit={handleSubmit}>
-      <LoginAdmin />
+      <LoginAdmin header="Sign In Admin" />
       <input type="submit" value="Ingresar" />
     </Formulary>
   );
