@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { ShiftContext } from "../../context/ShiftContext";
@@ -6,6 +6,7 @@ import Error from "../Error";
 import { doc, updateDoc, getDocs, collection } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import Spinner from "./../Spinner";
+import { pricePerMonth } from "../helpers";
 const Form = styled.form`
   display: flex;
   justify-content: center;
@@ -66,8 +67,9 @@ const AddPacks = () => {
     success,
     loading,
     setLoading,
+    users,
+    setUsers,
   } = useContext(ShiftContext);
-  const [users, setUsers] = useState([]);
 
   const clientsCollectionRef = collection(db, `clients`);
   const updateUser = async (email, pack) => {
@@ -88,7 +90,8 @@ const AddPacks = () => {
 
       setError({ state: false, message: "" });
       const clientDoc = doc(db, "clients", filtered[0]);
-      const newFields = { pack: Number(pack) };
+      const price = pricePerMonth(Number(pack));
+      const newFields = { pack: Number(pack), price };
       await updateDoc(clientDoc, newFields);
       setError({ state: false, message: "" });
       setLoading(false);
@@ -171,7 +174,7 @@ const AddPacks = () => {
       {success && <p className="exito">Pack añadido exitosamente</p>}
       <input type="submit" value="Agregar Pack" />
       <Link to="/admin">
-        <button>Atras</button>
+        <button className="back">Atras</button>
       </Link>
     </Form>
   );
