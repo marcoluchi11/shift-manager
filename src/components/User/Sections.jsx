@@ -1,5 +1,8 @@
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { formatearDinero } from "../helpers";
+import { formatMoney } from "../helpers";
+import { ShiftContext } from "./../../context/ShiftContext";
+import Spinner from "./../../components/Spinner";
 const Owing = styled.div`
   background-color: #ff0039;
   border-radius: 5px;
@@ -11,7 +14,14 @@ const Pack = styled.h2`
   margin: 0;
 `;
 const Sections = () => {
-  return (
+  const { users, user } = useContext(ShiftContext);
+  const [current, setCurrent] = useState([]);
+  useEffect(() => {
+    setCurrent(users.filter((elem) => elem.email === user.email));
+    // eslint-disable-next-line
+  }, [users]);
+
+  return current.length ? (
     <div>
       <div>
         <h2>Mis reservas</h2>
@@ -22,17 +32,19 @@ const Sections = () => {
 
       <div>
         <Pack>Mi pack</Pack>
-        <h3>4 veces por semana</h3>
+        <h3> {current[0].pack} veces por semana</h3>
         <p>Clases restantes: 4/16</p>
-        <hr />
       </div>
+      <hr />
 
       <Owing>
         <h2>Mi saldo a pagar</h2>
-        <h3>{formatearDinero(2000)}</h3>
+        <h3>{formatMoney(current[0].price)}</h3>
       </Owing>
       <hr />
     </div>
+  ) : (
+    <Spinner />
   );
 };
 
