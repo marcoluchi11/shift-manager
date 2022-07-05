@@ -1,8 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { formatMoney } from "../helpers";
+import { formatMoney, timeTable } from "../helpers";
 import { ShiftContext } from "./../../context/ShiftContext";
 import Spinner from "./../../components/Spinner";
+import "react-calendar/dist/Calendar.css";
+import Calendar from "react-calendar";
+import { nanoid } from "nanoid";
+import { format } from "date-fns";
+
 const Owing = styled.div`
   background-color: #ff0039;
   border-radius: 5px;
@@ -16,6 +21,7 @@ const Pack = styled.h2`
 const Sections = () => {
   const { users, user } = useContext(ShiftContext);
   const [current, setCurrent] = useState([]);
+  const [date, setDate] = useState(new Date());
   useEffect(() => {
     setCurrent(users.filter((elem) => elem.email === user.email));
     // eslint-disable-next-line
@@ -41,6 +47,26 @@ const Sections = () => {
         <h2>Mi saldo a pagar</h2>
         <h3>{formatMoney(current[0].price)}</h3>
       </Owing>
+      <div>
+        <Calendar
+          defaultActiveStartDate={date}
+          onChange={setDate}
+          value={date}
+          // onClickDay={(value, event) =>
+
+          // }
+        />
+        <h3>Reserva tu turno</h3>
+        {/*  //=> 'November' */}
+        <h4>Dia elegido : {format(date, `eeee d MMMM yyyy`)}</h4>
+        <select name="dates" id="dates">
+          {timeTable.map((elem) => (
+            <option key={nanoid()} value={elem}>
+              {elem} - Disponible 5 de 7
+            </option>
+          ))}
+        </select>
+      </div>
       <hr />
     </div>
   ) : (
