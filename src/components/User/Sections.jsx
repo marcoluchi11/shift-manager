@@ -8,14 +8,8 @@ import Calendar from "react-calendar";
 import { nanoid } from "nanoid";
 import { format } from "date-fns";
 import { db } from "./../../firebaseConfig";
-import {
-  addDoc,
-  arrayRemove,
-  collection,
-  doc,
-  getDocs,
-  setDoc,
-} from "firebase/firestore";
+
+import { collection, doc, getDocs, setDoc, getDoc } from "firebase/firestore";
 const Owing = styled.div`
   background-color: #ff0039;
   border-radius: 5px;
@@ -28,9 +22,10 @@ const Pack = styled.h2`
 `;
 const Sections = () => {
   const [shift, setShift] = useState([]);
-  const { users, user } = useContext(ShiftContext);
+  const { users, user, loading, setLoading } = useContext(ShiftContext);
   const [current, setCurrent] = useState([]);
   const [date, setDate] = useState(new Date());
+  const [shiftkeys, setShiftKeys] = useState({});
   const getShifts = async () => {
     const datesCollectionRef = collection(db, "dates");
     const data = await getDocs(datesCollectionRef);
@@ -67,8 +62,28 @@ const Sections = () => {
     // eslint-disable-next-line
   }, [users]);
   useEffect(() => {
-    getShifts();
-  }, []);
+    const getDia = async () => {
+      setLoading(true);
+      const month = date.toLocaleString("default", { month: "long" });
+
+      const dateRef = doc(db, "dates", `${date.getDate()} ${month}`);
+
+      const fechovich = await getDoc(dateRef);
+      if (fechovich.exists()) {
+        setShift(fechovich.data().times);
+        setLoading(false);
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    };
+    getDia();
+    // getShifts();
+  }, [date]);
+
+  useEffect(() => {
+    setShiftKeys(Object.keys(shift));
+  }, [shift]);
 
   return current.length ? (
     <div>
@@ -99,23 +114,35 @@ const Sections = () => {
         <h3>Reserva tu turno</h3>
 
         <h4>Dia elegido : {format(date, `eeee d MMMM yyyy`)}</h4>
-        <select name="dates" id="dates">
-          {timeTable.map((elem) => {
-            const rightNow = new Date();
+        {loading ? (
+          <Spinner />
+        ) : (
+          <select name="dates" id="dates">
+            {timeTable.map((elem) => {
+              const rightNow = new Date();
 
-            if (
-              elem.split(":")[0] < rightNow.getHours() &&
-              elem.split(":")[0] < rightNow.getMinutes()
-            ) {
-              return false;
-            }
-            return (
-              <option key={nanoid()} value={elem}>
-                {elem} - Disponible 5 de 7
-              </option>
-            );
-          })}
-        </select>
+              if (
+                elem.split(":")[0] <= rightNow.getHours() &&
+                elem.split(":")[0] <= rightNow.getMinutes()
+              ) {
+                return null;
+              }
+              return (
+                <option key={nanoid()} value={elem}>
+                  {elem} -
+                  {shiftkeys.map((item) => {
+                    const str = elem.split(":")[0] + elem.split(":")[1];
+                    if (str === item) {
+                      return ` ${shift[item].slots} disponibles de 7`;
+                    }
+                    return null;
+                  })}
+                </option>
+              );
+            })}
+          </select>
+        )}
+
         <button onClick={createDates}>Crear Fechas</button>
       </div>
       <div>
