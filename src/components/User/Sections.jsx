@@ -1,12 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
-import Error from "./../Error";
-import { formatMoney, timeSample as times } from "../helpers";
+import { timeSample as times } from "../helpers";
 import { ShiftContext } from "./../../context/ShiftContext";
 import Spinner from "./../../components/Spinner";
 import "react-calendar/dist/Calendar.css";
-import Calendar from "react-calendar";
-import { format } from "date-fns";
 import { db } from "./../../firebaseConfig";
 import {
   doc,
@@ -16,18 +12,10 @@ import {
   arrayUnion,
   increment,
 } from "firebase/firestore";
-import SelectShift from "./SelectShift";
-const ContainerCalendar = styled.div``;
-const Owing = styled.div`
-  background-color: #ff0039;
-  border-radius: 5px;
-`;
-const Pack = styled.h2`
-  background-color: #2780e3;
-  border-radius: 5px;
-  padding: 0.3rem 0;
-  margin: 0;
-`;
+import ReservesList from "./ReservesList";
+import InfoUser from "./InfoUser";
+import ReservesShift from "./ReservesShift";
+
 const Sections = () => {
   const [shift, setShift] = useState([]);
   const { users, user, loading, setLoading, error, setError } =
@@ -97,52 +85,19 @@ const Sections = () => {
 
   return current.length ? (
     <div>
-      <div>
-        <h2>Mis reservas</h2>
-        <p>Jueves 30 de Junio, 9:30am</p>
-        <p>Viernes 31 de Junio, 9:30am</p>
-      </div>
-      <hr />
-
-      <div>
-        <Pack>Mi pack</Pack>
-        <h3> {current[0].pack} veces por semana</h3>
-        <p>Clases restantes: 4/16</p>
-      </div>
-      <hr />
-
-      <Owing>
-        <h2>Mi saldo a pagar</h2>
-        <h3>{formatMoney(current[0].price)}</h3>
-      </Owing>
-      <ContainerCalendar>
-        <Calendar
-          defaultActiveStartDate={date}
-          onChange={setDate}
-          value={date}
-          minDate={new Date()}
-        />
-        <h3>Reserva tu turno</h3>
-
-        <h4>Dia elegido : {format(date, `eeee d MMMM yyyy`)}</h4>
-        {error.state && <Error message={error.message} />}
-        {loading ? (
-          <Spinner />
-        ) : (
-          <SelectShift
-            setShiftTime={setShiftTime}
-            shiftkeys={shiftkeys}
-            shift={shift}
-          />
-        )}
-
-        <button onClick={createDates}>crear Turno</button>
-        <button onClick={() => saveShift(user.email)}>Reservar Turno</button>
-      </ContainerCalendar>
-      <div>
-        <h3>Turnos Reservados</h3>
-        <hr />
-      </div>
+      createDates, saveShift, shift, setShiftTime, shiftkeys, user,
+      <InfoUser current={current} />
+      <ReservesShift
+        date={date}
+        setDate={setDate}
+        createDates={createDates}
+        shift={shift}
+        saveShift={saveShift}
+        shiftkeys={shiftkeys}
+        setShiftTime={setShiftTime}
+        user={user}
+      />
+      <ReservesList />
       <hr />
     </div>
   ) : (
