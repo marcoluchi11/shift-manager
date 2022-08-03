@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import { ShiftContext } from "../../context/ShiftContext";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -55,8 +55,7 @@ const Formulary = styled.form`
     font-weight: 300;
     color: #fff;
   }
-  input[type="submit"],
-  button {
+  input[type="submit"] {
     margin-top: 1rem;
     width: 100%;
     background-color: #ffffff;
@@ -93,8 +92,6 @@ const CreateUser = () => {
       setLoading(true);
       await addDoc(clientsCollectionRef, {
         email: register.email,
-
-        //LE AGREGA MAIL CUANDO CREA USUARIO
       });
       await createUserWithEmailAndPassword(
         auth,
@@ -152,7 +149,7 @@ const CreateUser = () => {
       </div>
       <input type="submit" value="Crear usuario" />
       <Link to="/admin">
-        <button>Atrás</button>
+        <button className="back">Atrás</button>
       </Link>
     </Formulary>
   );
