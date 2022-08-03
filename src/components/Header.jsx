@@ -6,7 +6,7 @@ const Container = styled.header`
 const Header = () => {
   return (
     <Container>
-      <h1>Gestion de Turnos</h1>
+      <h1>Gestión de Turnos</h1>
     </Container>
   );
 };
