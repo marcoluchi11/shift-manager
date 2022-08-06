@@ -31,7 +31,7 @@ const Login = () => {
         login.email,
         login.password
       );
-      setUser(usuario);
+      setUser(usuario.user);
       if (usuario) {
         getUsers();
       }
@@ -40,7 +40,7 @@ const Login = () => {
     }
   };
   return user ? (
-    <WelcomeUser />
+    <WelcomeUser getUsers={getUsers} />
   ) : (
     <Formulary onSubmit={handleSubmit}>
       <LoginAdmin header="Ingresa para reservar tu clase" />
