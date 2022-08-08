@@ -8,15 +8,24 @@ import { Formulary } from "../Admin/WelcomeAdmin";
 import WelcomeUser from "./WelcomeUser";
 
 const Login = () => {
-  const { user, setUser, login, setUsers } = useContext(ShiftContext);
+  const { user, setUser, login, setUsers, reserves, setReserves } =
+    useContext(ShiftContext);
   const clientsCollectionRef = collection(db, "clients");
   const getUsers = async () => {
     const data = await getDocs(clientsCollectionRef);
     setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
+  const getReserves = async () => {
+    const reservesRef = collection(db, "dates");
+
+    const reserve = await getDocs(reservesRef);
+
+    setReserves(reserve.docs.map((doc) => ({ ...doc.data(), day: doc.id })));
+  };
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      getReserves();
       getUsers();
     });
     // eslint-disable-next-line
@@ -34,6 +43,7 @@ const Login = () => {
       setUser(usuario.user);
       if (usuario) {
         getUsers();
+        getReserves();
       }
     } catch (error) {
       console.log(error.message);
