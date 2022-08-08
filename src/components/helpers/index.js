@@ -55,118 +55,118 @@ export const timeTable = [
 export const timeSample = {
   630: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   700: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   730: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   800: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   830: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   900: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   930: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1000: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1030: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1100: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1130: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1200: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1230: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1300: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1330: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1400: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1430: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1500: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1530: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1600: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1630: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1700: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1730: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1800: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1830: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1900: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   1930: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   2000: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
   2030: {
     slots: 5,
-    mail: "asd@gmail.com",
+    mail: [],
   },
 };
