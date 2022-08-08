@@ -11,10 +11,14 @@ const ShiftProvider = ({ children }) => {
   const [clases, setClases] = useState({ email: "", pack: "" });
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
+  const [reserves, setReserves] = useState([]);
+
   return (
     <ShiftContext.Provider
       value={{
         error,
+        reserves,
+        setReserves,
         setUsers,
         users,
         success,
