@@ -70,28 +70,27 @@ const AddPacks = () => {
     users,
     setUsers,
   } = useContext(ShiftContext);
-
+  // QUE LOS CLIENTES NO TENGO ID GENERCIO SINO SU EMAIL
   const clientsCollectionRef = collection(db, `clients`);
+  console.log(users);
   const updateUser = async (email, pack) => {
     setLoading(true);
     try {
       const client = users.map((user) => {
         if (user.email === email) {
-          return user.id;
+          return user.email;
         } else {
           return false;
         }
       });
       const filtered = client.filter((cli) => cli !== false);
-      console.log(filtered);
       if (filtered.length === 0) {
         return false;
       }
-
       setError({ state: false, message: "" });
       const clientDoc = doc(db, "clients", filtered[0]);
       const price = pricePerMonth(Number(pack));
-      const newFields = { pack: Number(pack), price };
+      const newFields = { pack: Number(pack), price, clases: Number(pack) * 4 };
       await updateDoc(clientDoc, newFields);
       setError({ state: false, message: "" });
       setLoading(false);
@@ -135,7 +134,7 @@ const AddPacks = () => {
   useEffect(() => {
     const getUsers = async () => {
       const data = await getDocs(clientsCollectionRef);
-      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      setUsers(data.docs.map((doc) => ({ ...doc.data() })));
     };
 
     getUsers();
