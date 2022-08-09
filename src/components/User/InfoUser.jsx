@@ -1,5 +1,8 @@
+import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
-import { formatMoney } from "../helpers";
+import { ShiftContext } from "../../context/ShiftContext";
+import { formatMoney, getReservas } from "../helpers";
+import ReservesByUser from "./ReservesByUser";
 
 const Owing = styled.div`
   background-color: #ff0039;
@@ -12,12 +15,18 @@ const Pack = styled.h2`
   margin: 0;
 `;
 const InfoUser = ({ current }) => {
+  const { reserves, user } = useContext(ShiftContext);
+  const [reservesList, setReservesList] = useState(null);
+  useEffect(() => {
+    const keys = Object.keys(reserves[0].times);
+    setReservesList(getReservas(reserves, keys, user.email));
+    //eslint-disable-next-line
+  }, [reserves]);
   return (
     <>
       <div>
         <h2>Mis reservas</h2>
-        <p>Jueves 30 de Junio, 9:30am</p>
-        <p>Viernes 31 de Junio, 9:30am</p>
+        {reservesList && <ReservesByUser reservesList={reservesList} />}
       </div>
       <hr />
 
