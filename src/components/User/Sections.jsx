@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+
 import { timeSample as times } from "../helpers";
 import { ShiftContext } from "./../../context/ShiftContext";
 import Spinner from "./../../components/Spinner";
@@ -18,22 +19,33 @@ import ReservesShift from "./ReservesShift";
 
 const Sections = () => {
   const [shift, setShift] = useState([]);
-  const { users, user, loading, setLoading, error, setError } =
-    useContext(ShiftContext);
+  const { users, user, setLoading, setError } = useContext(ShiftContext);
   const [current, setCurrent] = useState([]);
   const [date, setDate] = useState(new Date());
   const [shiftkeys, setShiftKeys] = useState({});
   const [shiftTime, setShiftTime] = useState("");
   const saveShift = async (email) => {
+    // SI NO HAY SLOTS EN ESA CLASE, ME TIENE QUE DAR ERROR
+    // MOSTRAR LOS TURNOS RESERVADOS QUE TENGO
+    const hora = shiftTime.split(":")[0] + shiftTime.split(":")[1];
     if (shiftTime === "") {
       setError({ state: true, message: "Elegi un horario" });
       return;
+    }
+    if (Array.isArray(shift[hora].mail)) {
+      const probation = shift[hora].mail.filter((elem) => elem === user.email);
+      if (probation.length) {
+        setError({
+          state: true,
+          message: "El turno ya fue reservado en ese horario",
+        });
+        return;
+      }
     }
     try {
       setError({ state: false, message: "" });
       const month = date.toLocaleString("default", { month: "long" });
       const dateRef = doc(db, "dates", `${date.getDate()} ${month}`);
-      const hora = shiftTime.split(":")[0] + shiftTime.split(":")[1];
       //SI ES EL MISMO MAIL, LO PISA. SLOTS SE RESTA CORRECTAMENTE.
       const newFields = {
         [`times.${hora}.mail`]: arrayUnion(email),
@@ -61,7 +73,8 @@ const Sections = () => {
   useEffect(() => {
     setCurrent(users.filter((elem) => elem.email === user.email));
     // eslint-disable-next-line
-  }, [users]);
+  }, [users, user]);
+
   const getDia = async () => {
     const month = date.toLocaleString("default", { month: "long" });
 
@@ -85,7 +98,6 @@ const Sections = () => {
 
   return current.length ? (
     <div>
-      createDates, saveShift, shift, setShiftTime, shiftkeys, user,
       <InfoUser current={current} />
       <ReservesShift
         date={date}
@@ -106,6 +118,3 @@ const Sections = () => {
 };
 
 export default Sections;
-// SI RESERVO LA MISMA CLASE QUE YA ESTOY ANOTADO, ME  TIENE QUE DAR ERROR
-// SI NO HAY SLOTS EN ESA CLASE, ME TIENE QUE DAR ERROR
-// MOSTRAR LOS TURNOS RESERVADOS QUE TENGO
