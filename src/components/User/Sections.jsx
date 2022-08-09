@@ -13,7 +13,6 @@ import {
   arrayUnion,
   increment,
 } from "firebase/firestore";
-import ReservesList from "./ReservesList";
 import InfoUser from "./InfoUser";
 import ReservesShift from "./ReservesShift";
 
@@ -26,7 +25,6 @@ const Sections = () => {
   const [shiftTime, setShiftTime] = useState("");
   const saveShift = async (email) => {
     // SI NO HAY SLOTS EN ESA CLASE, ME TIENE QUE DAR ERROR
-    // MOSTRAR LOS TURNOS RESERVADOS QUE TENGO
     const hora = shiftTime.split(":")[0] + shiftTime.split(":")[1];
     if (shiftTime === "") {
       setError({ state: true, message: "Elegi un horario" });
@@ -46,11 +44,16 @@ const Sections = () => {
       setError({ state: false, message: "" });
       const month = date.toLocaleString("default", { month: "long" });
       const dateRef = doc(db, "dates", `${date.getDate()} ${month}`);
+      const clientRef = doc(db, "clients", `${user.email}`);
       //SI ES EL MISMO MAIL, LO PISA. SLOTS SE RESTA CORRECTAMENTE.
       const newFields = {
         [`times.${hora}.mail`]: arrayUnion(email),
         [`times.${hora}.slots`]: increment(-1),
       };
+      const newFieldsClient = {
+        clases: increment(-1),
+      };
+      await updateDoc(clientRef, newFieldsClient);
       await updateDoc(dateRef, newFields);
       getDia();
     } catch (err) {
@@ -109,7 +112,7 @@ const Sections = () => {
         setShiftTime={setShiftTime}
         user={user}
       />
-      <ReservesList />
+
       <hr />
     </div>
   ) : (
