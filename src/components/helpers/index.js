@@ -189,3 +189,45 @@ export const getReservas = (reserva, keys) => {
   });
   return reservation;
 };
+
+export const translateMonth = (month) => {
+  switch (month) {
+    case "January":
+      return "Enero";
+    case "February":
+      return "Febrero";
+    case "March":
+      return "Marzo";
+    case "April":
+      return "Abril";
+    case "May":
+      return "Mayo";
+    case "June":
+      return "Junio";
+    case "July":
+      return "Julio";
+    case "August":
+      return "Agosto";
+    case "September":
+      return "Septiembre";
+    case "October":
+      return "Octubre";
+    case "November":
+      return "Noviembre";
+    case "December":
+      return "December";
+    default:
+  }
+};
+export const setColon = (time) => {
+  if (time.length > 3) {
+    const hora = time.split("");
+    hora.splice(2, 0, ":");
+    return hora.join().replaceAll(",", "");
+  } else {
+    const hora = time.split("");
+    hora.splice(1, 0, ":");
+
+    return hora.join().replaceAll(",", "");
+  }
+};
