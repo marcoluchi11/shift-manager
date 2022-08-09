@@ -170,3 +170,22 @@ export const timeSample = {
     mail: [],
   },
 };
+
+export const getReservas = (reserva, keys) => {
+  let reservation = [];
+  reserva.forEach((elem) => {
+    //OBTENER KEYS
+    // RECORRER ARRAY EN TIMES[KEYS[INDEX]]
+    keys.forEach((llaves) => {
+      if (elem.times[llaves].mail.length === 0) {
+        return;
+      } else {
+        elem.times[llaves].mail.forEach((turno) => {
+          const turnovich = { day: elem.day, time: llaves };
+          reservation = [...reservation, turnovich];
+        });
+      }
+    });
+  });
+  return reservation;
+};
