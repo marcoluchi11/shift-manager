@@ -33,7 +33,9 @@ const InfoUser = ({ current }) => {
       <div>
         <Pack>Mi pack</Pack>
         <h3> {current[0].pack} veces por semana</h3>
-        <p>Clases restantes: 4/16</p>
+        <p>
+          Clases restantes: {current[0].clases}/{current[0].pack * 4}
+        </p>
       </div>
       <hr />
 
