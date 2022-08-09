@@ -6,7 +6,7 @@ import auth, { db } from "../../firebaseConfig";
 import { Link } from "react-router-dom";
 import Error from "../Error";
 import Spinner from "./../Spinner";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, setDoc, doc } from "firebase/firestore";
 const Formulary = styled.form`
   display: flex;
   position: relative;
@@ -80,6 +80,7 @@ const CreateUser = () => {
   } = useContext(ShiftContext);
 
   const clientsCollectionRef = collection(db, `clients`);
+
   const createUser = async (e) => {
     e.preventDefault();
     //validacion
@@ -90,9 +91,8 @@ const CreateUser = () => {
     setError({ state: false, message: "" });
     try {
       setLoading(true);
-      await addDoc(clientsCollectionRef, {
-        email: register.email,
-      });
+      const docData = { email: register.email };
+      await setDoc(doc(db, "clients", `${register.email}`), docData);
       await createUserWithEmailAndPassword(
         auth,
         register.email,
