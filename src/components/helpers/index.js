@@ -171,16 +171,15 @@ export const timeSample = {
   },
 };
 
-export const getReservas = (reserva, keys) => {
+export const getReservas = (reserva, keys, email) => {
   let reservation = [];
   reserva.forEach((elem) => {
-    //OBTENER KEYS
-    // RECORRER ARRAY EN TIMES[KEYS[INDEX]]
     keys.forEach((llaves) => {
       if (elem.times[llaves].mail.length === 0) {
         return;
       } else {
         elem.times[llaves].mail.forEach((turno) => {
+          if (turno !== email) return;
           const turnovich = { day: elem.day, time: llaves };
           reservation = [...reservation, turnovich];
         });
@@ -190,7 +189,7 @@ export const getReservas = (reserva, keys) => {
   return reservation;
 };
 
-export const translateMonth = (month) => {
+export const translateMonth = (month, day = false) => {
   switch (month) {
     case "January":
       return "Enero";
@@ -219,6 +218,26 @@ export const translateMonth = (month) => {
     default:
   }
 };
+export const translateDay = (day) => {
+  switch (day) {
+    case "Monday":
+      return "Lunes";
+    case "Tuesday":
+      return "Martes";
+    case "Wednesday":
+      return "Miercoles";
+    case "Thursday":
+      return "Jueves";
+    case "Friday":
+      return "Viernes";
+    case "Saturday":
+      return "Sabado";
+    case "Sunday":
+      return "Domingo";
+    default:
+      return;
+  }
+};
 export const setColon = (time) => {
   if (time.length > 3) {
     const hora = time.split("");
@@ -227,7 +246,6 @@ export const setColon = (time) => {
   } else {
     const hora = time.split("");
     hora.splice(1, 0, ":");
-
     return hora.join().replaceAll(",", "");
   }
 };
