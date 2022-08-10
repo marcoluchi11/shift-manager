@@ -18,16 +18,20 @@ import ReservesShift from "./ReservesShift";
 
 const Sections = () => {
   const [shift, setShift] = useState([]);
-  const { users, user, setLoading, setError } = useContext(ShiftContext);
+  const { users, user, setLoading, setError, success, setSuccess, loading } =
+    useContext(ShiftContext);
   const [current, setCurrent] = useState([]);
   const [date, setDate] = useState(new Date());
   const [shiftkeys, setShiftKeys] = useState({});
   const [shiftTime, setShiftTime] = useState("");
   const saveShift = async (email) => {
-    // SI NO HAY SLOTS EN ESA CLASE, ME TIENE QUE DAR ERROR
     const hora = shiftTime.split(":")[0] + shiftTime.split(":")[1];
     if (shiftTime === "") {
       setError({ state: true, message: "Elegi un horario" });
+      return;
+    }
+    if (!shift[hora].slots) {
+      setError({ state: true, message: "No hay lugar en ese horario" });
       return;
     }
     if (Array.isArray(shift[hora].mail)) {
@@ -41,6 +45,7 @@ const Sections = () => {
       }
     }
     try {
+      setLoading(true);
       setError({ state: false, message: "" });
       const month = date.toLocaleString("default", { month: "long" });
       const dateRef = doc(db, "dates", `${date.getDate()} ${month}`);
@@ -55,7 +60,13 @@ const Sections = () => {
       };
       await updateDoc(clientRef, newFieldsClient);
       await updateDoc(dateRef, newFields);
+      setLoading(false);
+      setSuccess(true);
+
       getDia();
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3640);
     } catch (err) {
       console.log("error bicho");
     }
@@ -93,7 +104,7 @@ const Sections = () => {
   useEffect(() => {
     getDia();
     // eslint-disable-next-line
-  }, [date, setLoading]);
+  }, [date]);
 
   useEffect(() => {
     setShiftKeys(Object.keys(shift));
@@ -114,6 +125,8 @@ const Sections = () => {
       />
 
       <hr />
+      {loading && <Spinner />}
+      {success && <p className="exito"> Turno reservado correctamente</p>}
     </div>
   ) : (
     <Spinner />
