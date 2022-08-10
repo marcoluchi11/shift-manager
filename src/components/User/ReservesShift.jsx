@@ -1,11 +1,10 @@
 import "react-calendar/dist/Calendar.css";
 import Calendar from "react-calendar";
 import { format } from "date-fns";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 import { ShiftContext } from "../../context/ShiftContext";
 import Error from "../Error";
-import Spinner from "../Spinner";
 import SelectShift from "./SelectShift";
 
 const ReservesShift = ({
@@ -18,7 +17,7 @@ const ReservesShift = ({
   shiftkeys,
   user,
 }) => {
-  const { error, loading } = useContext(ShiftContext);
+  const { error } = useContext(ShiftContext);
 
   return (
     <div>
@@ -32,15 +31,12 @@ const ReservesShift = ({
 
       <h4>Dia elegido : {format(date, `eeee d MMMM yyyy`)}</h4>
       {error.state && <Error message={error.message} />}
-      {loading ? (
-        <Spinner />
-      ) : (
-        <SelectShift
-          setShiftTime={setShiftTime}
-          shiftkeys={shiftkeys}
-          shift={shift}
-        />
-      )}
+
+      <SelectShift
+        setShiftTime={setShiftTime}
+        shiftkeys={shiftkeys}
+        shift={shift}
+      />
 
       <button onClick={createDates}>crear Turno</button>
       <button onClick={() => saveShift(user.email)}>Reservar Turno</button>
