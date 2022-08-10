@@ -30,8 +30,18 @@ const Sections = () => {
       setError({ state: true, message: "Elegi un horario" });
       return;
     }
+    if (current[0].clases) {
+      setError({
+        state: true,
+        message: "Error - No tienes clases disponibles",
+      });
+      return;
+    }
     if (!shift[hora].slots) {
-      setError({ state: true, message: "No hay lugar en ese horario" });
+      setError({
+        state: true,
+        message: " Error - No hay lugar en ese horario",
+      });
       return;
     }
     if (Array.isArray(shift[hora].mail)) {
@@ -39,7 +49,7 @@ const Sections = () => {
       if (probation.length) {
         setError({
           state: true,
-          message: "El turno ya fue reservado en ese horario",
+          message: "Error - Ya reservaste en ese horario",
         });
         return;
       }
@@ -66,7 +76,7 @@ const Sections = () => {
       getDia();
       setTimeout(() => {
         setSuccess(false);
-      }, 3640);
+      }, 4500);
     } catch (err) {
       console.log("error bicho");
     }
