@@ -1,9 +1,17 @@
 import { nanoid } from "nanoid";
+import styled from "styled-components";
 import { timeTable } from "../helpers";
-
+const Selectovich = styled.select`
+  width: 100%;
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 400;
+  border-radius: 5px;
+  outline: none;
+`;
 const SelectShift = ({ shiftkeys, shift, setShiftTime }) => {
   return (
-    <select
+    <Selectovich
       name="dates"
       id="dates"
       onChange={(e) => setShiftTime(e.target.value)}
@@ -18,7 +26,7 @@ const SelectShift = ({ shiftkeys, shift, setShiftTime }) => {
           return null;
         }
         return (
-          <option key={nanoid()} value={elem}>
+          <option value={elem} key={nanoid()}>
             {elem} -
             {shiftkeys.map((item) => {
               const str = elem.split(":")[0] + elem.split(":")[1];
@@ -30,7 +38,7 @@ const SelectShift = ({ shiftkeys, shift, setShiftTime }) => {
           </option>
         );
       })}
-    </select>
+    </Selectovich>
   );
 };
 
