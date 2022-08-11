@@ -50,7 +50,7 @@ const Login = () => {
     }
   };
   return user ? (
-    <WelcomeUser getUsers={getUsers} />
+    <WelcomeUser getUsers={getUsers} getReserves={getReserves} />
   ) : (
     <Formulary onSubmit={handleSubmit}>
       <LoginAdmin header="Ingresa para reservar tu clase" />
