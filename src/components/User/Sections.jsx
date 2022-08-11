@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-
 import { timeSample as times } from "../helpers";
 import { ShiftContext } from "./../../context/ShiftContext";
 import Spinner from "./../../components/Spinner";
@@ -16,7 +15,7 @@ import {
 import InfoUser from "./InfoUser";
 import ReservesShift from "./ReservesShift";
 
-const Sections = () => {
+const Sections = ({ getUsers, getReserves }) => {
   const [shift, setShift] = useState([]);
   const { users, user, setLoading, setError, success, setSuccess, loading } =
     useContext(ShiftContext);
@@ -25,12 +24,13 @@ const Sections = () => {
   const [shiftkeys, setShiftKeys] = useState({});
   const [shiftTime, setShiftTime] = useState("");
   const saveShift = async (email) => {
+    //CADA VEZ QUE RESERVO, SE ACTUALIZA TODO EN LOS ESTADOS. CLASES, NUEVO TURNO EN LA LISTA, EN EL SELECT SE RESTA CORRECTAMENTE.
     const hora = shiftTime.split(":")[0] + shiftTime.split(":")[1];
     if (shiftTime === "") {
       setError({ state: true, message: "Elegi un horario" });
       return;
     }
-    if (current[0].clases) {
+    if (current[0].clases <= 0) {
       setError({
         state: true,
         message: "Error - No tienes clases disponibles",
@@ -54,6 +54,7 @@ const Sections = () => {
         return;
       }
     }
+
     try {
       setLoading(true);
       setError({ state: false, message: "" });
@@ -65,6 +66,7 @@ const Sections = () => {
         [`times.${hora}.mail`]: arrayUnion(email),
         [`times.${hora}.slots`]: increment(-1),
       };
+
       const newFieldsClient = {
         clases: increment(-1),
       };
@@ -77,6 +79,7 @@ const Sections = () => {
       setTimeout(() => {
         setSuccess(false);
       }, 4500);
+      updateData();
     } catch (err) {
       console.log("error bicho");
     }
@@ -101,9 +104,7 @@ const Sections = () => {
 
   const getDia = async () => {
     const month = date.toLocaleString("default", { month: "long" });
-
     const dateRef = doc(db, "dates", `${date.getDate()} ${month}`);
-
     const fechovich = await getDoc(dateRef);
     if (fechovich.exists()) {
       setShift(fechovich.data().times);
@@ -115,7 +116,11 @@ const Sections = () => {
     getDia();
     // eslint-disable-next-line
   }, [date]);
-
+  const updateData = () => {
+    getDia();
+    getUsers();
+    getReserves();
+  };
   useEffect(() => {
     setShiftKeys(Object.keys(shift));
   }, [shift]);
