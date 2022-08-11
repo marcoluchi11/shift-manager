@@ -3,7 +3,7 @@ import { ShiftContext } from "../../context/ShiftContext";
 import { Container } from "../Admin/ScreenLogged";
 import Sections from "./Sections";
 
-const WelcomeUser = ({ getUsers }) => {
+const WelcomeUser = ({ getUsers, getReserves }) => {
   const { user } = useContext(ShiftContext);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const WelcomeUser = ({ getUsers }) => {
   return (
     <Container>
       <h2>Hola {user.email}, Bienvenido a DF</h2>
-      <Sections />
+      <Sections getUsers={getUsers} getReserves={getReserves} />
     </Container>
   );
 };
