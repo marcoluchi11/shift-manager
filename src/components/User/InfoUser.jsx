@@ -14,7 +14,7 @@ const Pack = styled.h2`
   padding: 0.3rem 0;
   margin: 0;
 `;
-const InfoUser = ({ current }) => {
+const InfoUser = ({ current, updateData }) => {
   const { reserves, user } = useContext(ShiftContext);
   const [reservesList, setReservesList] = useState(null);
   useEffect(() => {
@@ -25,8 +25,10 @@ const InfoUser = ({ current }) => {
   return (
     <>
       <div>
-        <h2>Mis reservas</h2>
-        {reservesList && <ReservesByUser reservesList={reservesList} />}
+        <h2>Turnos próximos</h2>
+        {reservesList && (
+          <ReservesByUser reservesList={reservesList} updateData={updateData} />
+        )}
       </div>
       <hr />
 

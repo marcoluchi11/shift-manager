@@ -127,7 +127,7 @@ const Sections = ({ getUsers, getReserves }) => {
 
   return current.length ? (
     <div>
-      <InfoUser current={current} />
+      <InfoUser current={current} updateData={updateData} />
       <ReservesShift
         date={date}
         setDate={setDate}
