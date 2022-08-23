@@ -50,6 +50,7 @@ const ReservesShift = ({
         </div>
       ) : (
         <SelectShift
+          fecha={date}
           setShiftTime={setShiftTime}
           shiftkeys={shiftkeys}
           shift={shift}
