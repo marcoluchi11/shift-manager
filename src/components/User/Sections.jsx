@@ -1,12 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { timeSample as times } from "../helpers";
 import { ShiftContext } from "./../../context/ShiftContext";
 import Spinner from "./../../components/Spinner";
 import "react-calendar/dist/Calendar.css";
 import { db } from "./../../firebaseConfig";
 import {
   doc,
-  setDoc,
   getDoc,
   updateDoc,
   arrayUnion,
@@ -84,19 +82,7 @@ const Sections = ({ getUsers, getReserves }) => {
       console.log("error bicho");
     }
   };
-  const createDates = async () => {
-    //FUNCION PARA ADMIN
-    try {
-      const docData = {
-        times,
-      };
-      for (let i = 1; i < 30; i++) {
-        await setDoc(doc(db, "dates", `${i} August`), docData);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
+
   useEffect(() => {
     setCurrent(users.filter((elem) => elem.email === user.email));
     // eslint-disable-next-line
@@ -131,7 +117,6 @@ const Sections = ({ getUsers, getReserves }) => {
       <ReservesShift
         date={date}
         setDate={setDate}
-        createDates={createDates}
         shift={shift}
         saveShift={saveShift}
         shiftkeys={shiftkeys}
