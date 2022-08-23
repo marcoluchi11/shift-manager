@@ -8,7 +8,7 @@ import { Formulary } from "../Admin/WelcomeAdmin";
 import WelcomeUser from "./WelcomeUser";
 
 const Login = () => {
-  const { user, setUser, login, setUsers, reserves, setReserves } =
+  const { user, setUser, login, setUsers, setReserves } =
     useContext(ShiftContext);
   const clientsCollectionRef = collection(db, "clients");
   const getUsers = async () => {
