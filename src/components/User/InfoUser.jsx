@@ -8,6 +8,9 @@ const Owing = styled.div`
   background-color: #ff0039;
   border-radius: 5px;
 `;
+const Sinturno = styled.p`
+  font-weight: 200;
+`;
 const Pack = styled.h2`
   background-color: #2780e3;
   border-radius: 5px;
@@ -16,7 +19,7 @@ const Pack = styled.h2`
 `;
 const InfoUser = ({ current, updateData }) => {
   const { reserves, user } = useContext(ShiftContext);
-  const [reservesList, setReservesList] = useState(null);
+  const [reservesList, setReservesList] = useState(false);
   useEffect(() => {
     const keys = Object.keys(reserves[0].times);
     setReservesList(getReservas(reserves, keys, user.email));
@@ -26,8 +29,11 @@ const InfoUser = ({ current, updateData }) => {
     <>
       <div>
         <h2>Turnos próximos</h2>
-        {reservesList && (
+
+        {reservesList.length ? (
           <ReservesByUser reservesList={reservesList} updateData={updateData} />
+        ) : (
+          <Sinturno>No hay turnos reservados...</Sinturno>
         )}
       </div>
       <hr />
