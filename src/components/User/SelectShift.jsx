@@ -9,7 +9,7 @@ const Selectovich = styled.select`
   border-radius: 5px;
   outline: none;
 `;
-const SelectShift = ({ shiftkeys, shift, setShiftTime }) => {
+const SelectShift = ({ fecha, shiftkeys, shift, setShiftTime }) => {
   return (
     <Selectovich
       name="dates"
@@ -18,12 +18,8 @@ const SelectShift = ({ shiftkeys, shift, setShiftTime }) => {
     >
       {timeTable.map((elem) => {
         const rightNow = new Date();
-
-        if (
-          elem.split(":")[0] <= rightNow.getHours() &&
-          elem.split(":")[0] <= rightNow.getMinutes()
-        ) {
-          return null;
+        if (rightNow.getDate() === fecha.getDate()) {
+          if (elem.split(":")[0] <= rightNow.getHours()) return null;
         }
         return (
           <option value={elem} key={nanoid()}>
