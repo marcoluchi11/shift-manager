@@ -1,10 +1,13 @@
 import { useContext, useState } from "react";
 import styled from "styled-components";
+import { timeSample as times } from "../helpers";
 import { ShiftContext } from "../../context/ShiftContext";
-import auth from "../../firebaseConfig";
+import auth, { db } from "../../firebaseConfig";
 import { signOut } from "firebase/auth";
 import CreateUser from "./CreateUser";
 import { Link } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
+
 export const Container = styled.div`
   display: flex;
   justify-content: center;
@@ -64,7 +67,19 @@ const ScreenLogged = () => {
     e.preventDefault();
     await signOut(auth);
   };
-
+  const createDates = async () => {
+    //FUNCION PARA ADMIN
+    try {
+      const docData = {
+        times,
+      };
+      for (let i = 1; i < 32; i++) {
+        await setDoc(doc(db, "dates", `${i} September`), docData);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <Container>
       <Header>
@@ -85,6 +100,7 @@ const ScreenLogged = () => {
             <Link to="/admin/reserves">
               <li>Ver reservas del dia</li>
             </Link>
+            <li onClick={createDates}>Crear Fechas</li>
           </ul>
         )}
       </div>
